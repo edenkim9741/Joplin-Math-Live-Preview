@@ -1,0 +1,17 @@
+{
+  "name": "joplin-math-live-preview",
+  "private": true,
+  "version": "0.1.2",
+  "description": "Obsidian-like LaTeX live preview for Joplin CodeMirror 6",
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "dist": "npm run build"
+  },
+  "dependencies": {
+    "katex": "^0.16.22"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "tar": "^7.5.22"
+  }
+}
