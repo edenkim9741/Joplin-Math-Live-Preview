@@ -1,0 +1,9 @@
+.cm-editor .jmlp-inline { display: inline-block; vertical-align: baseline; }
+.cm-editor .jmlp-display { display: block; text-align: center; padding: .4em 0; overflow-x: auto; }
+.cm-editor .jmlp-display .katex-display { margin: .2em 0; }
+.cm-editor .jmlp-inline .katex { font-size: 1.05em; }
+.cm-editor .jmlp-display .katex { font-size: 1.15em; }
+.cm-editor .jmlp-inline,
+.cm-editor .jmlp-display,
+.cm-editor .jmlp-inline *,
+.cm-editor .jmlp-display * { color: #000 !important; }
