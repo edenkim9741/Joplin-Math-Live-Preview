@@ -8,17 +8,18 @@ const renderMath = (source, displayMode) => katex.renderToString(source, {
 });
 
 class MathWidget extends WidgetType {
-  constructor(source, displayMode) {
+  constructor(source, displayMode, blockLayout = displayMode) {
     super();
     this.source = source;
     this.displayMode = displayMode;
+    this.blockLayout = blockLayout;
   }
   eq(other) {
-    return other.source === this.source && other.displayMode === this.displayMode;
+    return other.source === this.source && other.displayMode === this.displayMode && other.blockLayout === this.blockLayout;
   }
   toDOM() {
-    const element = document.createElement(this.displayMode ? 'div' : 'span');
-    element.className = this.displayMode ? 'jmlp-display' : 'jmlp-inline';
+    const element = document.createElement('span');
+    element.className = this.blockLayout ? 'jmlp-display' : (this.displayMode ? 'jmlp-display-inline' : 'jmlp-inline');
     element.innerHTML = renderMath(this.source, this.displayMode);
     return element;
   }
@@ -111,10 +112,36 @@ function mathDecorations(state) {
   const decorations = [];
   for (const math of findMath(text)) {
     if (selectionTouches(state.selection, math.from, math.to)) continue;
+
+    if (!math.displayMode) {
+      decorations.push(Decoration.replace({ widget: new MathWidget(math.source, false) }).range(math.from, math.to));
+      continue;
+    }
+
+    const firstLine = state.doc.lineAt(math.from);
+    const lastLine = state.doc.lineAt(math.to);
+    const standaloneStart = firstLine.text.slice(0, math.from - firstLine.from).trim() === '';
+    const standaloneEnd = lastLine.text.slice(math.to - lastLine.from).trim() === '';
+
+    // Keep every decoration on a single line. A single replacement spanning
+    // line breaks can corrupt CodeMirror's tile tree while the cursor enters
+    // and leaves the math range.
+    if (firstLine.number === lastLine.number) {
+      decorations.push(Decoration.replace({
+        widget: new MathWidget(math.source, true, standaloneStart && standaloneEnd),
+      }).range(math.from, math.to));
+      continue;
+    }
+    if (!standaloneStart || !standaloneEnd) continue;
+
     decorations.push(Decoration.replace({
-      widget: new MathWidget(math.source, math.displayMode),
-      block: math.displayMode,
-    }).range(math.from, math.to));
+      widget: new MathWidget(math.source, true, true),
+    }).range(firstLine.from, firstLine.to));
+
+    for (let lineNumber = firstLine.number + 1; lineNumber <= lastLine.number; lineNumber++) {
+      const line = state.doc.line(lineNumber);
+      decorations.push(Decoration.line({ class: 'jmlp-hidden-math-line' }).range(line.from));
+    }
   }
   return Decoration.set(decorations, true);
 }
