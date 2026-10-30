@@ -13,6 +13,15 @@ npm run build
 
 This creates `com.example.joplin-math-live-preview.jpl` as an uncompressed TAR archive in the project root and `dist/` for development installation. The build stops if required source or packaged files are missing.
 
+## GitHub Release
+
+Push a version tag beginning with `v` (for example, `v0.1.4`) to start the GitHub Actions release workflow. It installs the locked dependencies, builds the plugin, and attaches `com.example.joplin-math-live-preview.jpl` to a GitHub Release with generated release notes.
+
+```sh
+git tag v0.1.4
+git push origin v0.1.4
+```
+
 ## Install
 
 Open Joplin desktop → Settings → Plugins → gear → Install from file; select the `.jpl` file, then restart Joplin. Use the CodeMirror 6 Markdown editor, not the Rich Text Editor.
