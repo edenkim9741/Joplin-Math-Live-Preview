@@ -15,11 +15,11 @@ This creates `com.example.joplin-math-live-preview.jpl` as an uncompressed TAR a
 
 ## GitHub Release
 
-Push a version tag beginning with `v` (for example, `v0.1.4`) to start the GitHub Actions release workflow. It installs the locked dependencies, builds the plugin, and attaches `com.example.joplin-math-live-preview.jpl` to a GitHub Release with generated release notes.
+Push a version tag beginning with `v` (for example, `v0.0.1`) to start the GitHub Actions release workflow. It installs the locked dependencies, builds the plugin, and attaches `com.example.joplin-math-live-preview.jpl` to a GitHub Release with generated release notes.
 
 ```sh
-git tag v0.1.4
-git push origin v0.1.4
+git tag v0.0.1
+git push origin v0.0.1
 ```
 
 ## Install
