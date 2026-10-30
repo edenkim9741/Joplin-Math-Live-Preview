@@ -4,10 +4,10 @@ A small experimental Joplin plugin that renders `$...$`, `$$...$$`, `\\(...\\)`,
 
 ## Build
 
-Requires Node.js 18+ and npm with network access for the initial dependency installation.
+Requires Node.js 20 and npm.
 
 ```sh
-npm install
+npm ci
 npm run build
 ```
 
